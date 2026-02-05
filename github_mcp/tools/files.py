@@ -6,7 +6,6 @@
 - Создания, обновления и удаления файлов
 """
 
-from typing import Optional
 
 from mcp.server.fastmcp import FastMCP
 
@@ -20,8 +19,8 @@ def register_file_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def get_file_content(
         path: str,
-        repo: Optional[str] = None,
-        ref: Optional[str] = None,
+        repo: str | None = None,
+        ref: str | None = None,
     ) -> dict:
         """
         Получить содержимое файла из репозитория текущего владельца.
@@ -59,8 +58,8 @@ def register_file_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def get_directory_content(
         path: str = "",
-        repo: Optional[str] = None,
-        ref: Optional[str] = None,
+        repo: str | None = None,
+        ref: str | None = None,
     ) -> list[dict]:
         """
         Получить содержимое директории репозитория текущего владельца.
@@ -106,8 +105,8 @@ def register_file_tools(mcp: FastMCP, client: GitHubClient) -> None:
         path: str,
         content: str,
         message: str,
-        repo: Optional[str] = None,
-        branch: Optional[str] = None,
+        repo: str | None = None,
+        branch: str | None = None,
     ) -> dict:
         """
         Создать новый файл в репозитории текущего владельца.
@@ -145,8 +144,8 @@ def register_file_tools(mcp: FastMCP, client: GitHubClient) -> None:
         content: str,
         message: str,
         sha: str,
-        repo: Optional[str] = None,
-        branch: Optional[str] = None,
+        repo: str | None = None,
+        branch: str | None = None,
     ) -> dict:
         """
         Обновить существующий файл в репозитории текущего владельца.
@@ -184,8 +183,8 @@ def register_file_tools(mcp: FastMCP, client: GitHubClient) -> None:
         path: str,
         message: str,
         sha: str,
-        repo: Optional[str] = None,
-        branch: Optional[str] = None,
+        repo: str | None = None,
+        branch: str | None = None,
     ) -> dict:
         """
         Удалить файл из репозитория текущего владельца.

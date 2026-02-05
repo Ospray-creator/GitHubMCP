@@ -8,7 +8,6 @@
 - Получения списка контрибьюторов и языков
 """
 
-from typing import Optional
 
 from mcp.server.fastmcp import FastMCP
 
@@ -41,7 +40,7 @@ def register_repository_tools(mcp: FastMCP, client: GitHubClient) -> None:
 
     @mcp.tool()
     async def get_repository(
-        repo: Optional[str] = None,
+        repo: str | None = None,
     ) -> dict:
         """
         Получить информацию о репозитории (для владельца по умолчанию).
@@ -140,7 +139,7 @@ def register_repository_tools(mcp: FastMCP, client: GitHubClient) -> None:
 
     @mcp.tool()
     async def delete_repository(
-        repo: Optional[str] = None,
+        repo: str | None = None,
     ) -> dict:
         """
         Удалить репозиторий текущего владельца.
@@ -167,7 +166,7 @@ def register_repository_tools(mcp: FastMCP, client: GitHubClient) -> None:
     async def fork_repository(
         source_owner: str,
         source_repo: str,
-        name: Optional[str] = None,
+        name: str | None = None,
     ) -> dict:
         """
         Форкнуть чужой репозиторий к себе (текущему пользователю).
@@ -189,7 +188,7 @@ def register_repository_tools(mcp: FastMCP, client: GitHubClient) -> None:
 
     @mcp.tool()
     async def list_forks(
-        repo: Optional[str] = None,
+        repo: str | None = None,
         per_page: int = 30,
         page: int = 1,
     ) -> list[dict]:
@@ -223,7 +222,7 @@ def register_repository_tools(mcp: FastMCP, client: GitHubClient) -> None:
 
     @mcp.tool()
     async def list_contributors(
-        repo: Optional[str] = None,
+        repo: str | None = None,
         per_page: int = 30,
         page: int = 1,
     ) -> list[dict]:
@@ -259,7 +258,7 @@ def register_repository_tools(mcp: FastMCP, client: GitHubClient) -> None:
 
     @mcp.tool()
     async def list_languages(
-        repo: Optional[str] = None,
+        repo: str | None = None,
     ) -> dict:
         """
         Получить статистику языков программирования в репозитории текущего владельца.

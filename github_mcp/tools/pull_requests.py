@@ -7,7 +7,6 @@
 - Работы с комментариями и ревью
 """
 
-from typing import Optional
 
 from mcp.server.fastmcp import FastMCP
 
@@ -20,10 +19,10 @@ def register_pr_tools(mcp: FastMCP, client: GitHubClient) -> None:
 
     @mcp.tool()
     async def list_pull_requests(
-        repo: Optional[str] = None,
+        repo: str | None = None,
         state: str = "open",
-        head: Optional[str] = None,
-        base: Optional[str] = None,
+        head: str | None = None,
+        base: str | None = None,
         per_page: int = 30,
         page: int = 1,
     ) -> list[dict]:
@@ -70,7 +69,7 @@ def register_pr_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def get_pull_request(
         pull_number: int,
-        repo: Optional[str] = None,
+        repo: str | None = None,
     ) -> dict:
         """
         Получить информацию о Pull Request в репозитории текущего владельца.
@@ -118,7 +117,7 @@ def register_pr_tools(mcp: FastMCP, client: GitHubClient) -> None:
     async def create_pull_request(
         title: str,
         head: str,
-        repo: Optional[str] = None,
+        repo: str | None = None,
         base: str = "main",
         body: str = "",
         draft: bool = False,
@@ -155,11 +154,11 @@ def register_pr_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def update_pull_request(
         pull_number: int,
-        repo: Optional[str] = None,
-        title: Optional[str] = None,
-        body: Optional[str] = None,
-        state: Optional[str] = None,
-        base: Optional[str] = None,
+        repo: str | None = None,
+        title: str | None = None,
+        body: str | None = None,
+        state: str | None = None,
+        base: str | None = None,
     ) -> dict:
         """
         Обновить Pull Request в репозитории текущего владельца.
@@ -193,9 +192,9 @@ def register_pr_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def merge_pull_request(
         pull_number: int,
-        repo: Optional[str] = None,
-        commit_title: Optional[str] = None,
-        commit_message: Optional[str] = None,
+        repo: str | None = None,
+        commit_title: str | None = None,
+        commit_message: str | None = None,
         merge_method: str = "merge",
     ) -> dict:
         """
@@ -233,7 +232,7 @@ def register_pr_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def list_pr_commits(
         pull_number: int,
-        repo: Optional[str] = None,
+        repo: str | None = None,
         per_page: int = 30,
         page: int = 1,
     ) -> list[dict]:
@@ -271,7 +270,7 @@ def register_pr_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def list_pr_files(
         pull_number: int,
-        repo: Optional[str] = None,
+        repo: str | None = None,
         per_page: int = 30,
         page: int = 1,
     ) -> list[dict]:
@@ -316,7 +315,7 @@ def register_pr_tools(mcp: FastMCP, client: GitHubClient) -> None:
     async def create_pr_review(
         pull_number: int,
         body: str,
-        repo: Optional[str] = None,
+        repo: str | None = None,
         event: str = "COMMENT",
     ) -> dict:
         """
@@ -348,7 +347,7 @@ def register_pr_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def list_pr_comments(
         pull_number: int,
-        repo: Optional[str] = None,
+        repo: str | None = None,
         per_page: int = 30,
         page: int = 1,
     ) -> list[dict]:

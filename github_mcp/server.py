@@ -5,11 +5,10 @@ GitHub MCP Server — главный модуль сервера.
 всех инструментов для полного контроля GitHub.
 """
 
-import asyncio
 import logging
 import sys
-from contextlib import asynccontextmanager
 from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
@@ -18,15 +17,15 @@ from mcp.server.transport_security import TransportSecuritySettings
 from .client import GitHubClient
 from .config import settings
 from .tools import (
-    register_repository_tools,
-    register_file_tools,
+    register_action_tools,
     register_branch_tools,
+    register_file_tools,
+    register_gist_tools,
     register_issue_tools,
     register_pr_tools,
-    register_action_tools,
-    register_user_tools,
-    register_gist_tools,
+    register_repository_tools,
     register_search_tools,
+    register_user_tools,
 )
 
 # Настройка логирования

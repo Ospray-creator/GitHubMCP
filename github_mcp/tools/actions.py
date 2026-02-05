@@ -7,7 +7,6 @@
 - Получения логов
 """
 
-from typing import Optional
 
 from mcp.server.fastmcp import FastMCP
 
@@ -20,7 +19,7 @@ def register_action_tools(mcp: FastMCP, client: GitHubClient) -> None:
 
     @mcp.tool()
     async def list_workflows(
-        repo: Optional[str] = None,
+        repo: str | None = None,
         per_page: int = 30,
         page: int = 1,
     ) -> list[dict]:
@@ -59,7 +58,7 @@ def register_action_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def get_workflow(
         workflow_id: int,
-        repo: Optional[str] = None,
+        repo: str | None = None,
     ) -> dict:
         """
         Получить информацию о workflow в репозитории текущего владельца.
@@ -91,8 +90,8 @@ def register_action_tools(mcp: FastMCP, client: GitHubClient) -> None:
     async def trigger_workflow(
         workflow_id: int,
         ref: str = "main",
-        inputs: Optional[str] = None,
-        repo: Optional[str] = None,
+        inputs: str | None = None,
+        repo: str | None = None,
     ) -> dict:
         """
         Запустить workflow в репозитории текущего владельца (workflow_dispatch).
@@ -129,9 +128,9 @@ def register_action_tools(mcp: FastMCP, client: GitHubClient) -> None:
 
     @mcp.tool()
     async def list_workflow_runs(
-        workflow_id: Optional[int] = None,
-        status: Optional[str] = None,
-        repo: Optional[str] = None,
+        workflow_id: int | None = None,
+        status: str | None = None,
+        repo: str | None = None,
         per_page: int = 30,
         page: int = 1,
     ) -> list[dict]:
@@ -178,7 +177,7 @@ def register_action_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def get_workflow_run(
         run_id: int,
-        repo: Optional[str] = None,
+        repo: str | None = None,
     ) -> dict:
         """
         Получить информацию о запуске workflow в репозитории текущего владельца.
@@ -214,7 +213,7 @@ def register_action_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def cancel_workflow_run(
         run_id: int,
-        repo: Optional[str] = None,
+        repo: str | None = None,
     ) -> dict:
         """
         Отменить запуск workflow в репозитории текущего владельца.
@@ -239,7 +238,7 @@ def register_action_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def rerun_workflow(
         run_id: int,
-        repo: Optional[str] = None,
+        repo: str | None = None,
     ) -> dict:
         """
         Перезапустить workflow в репозитории текущего владельца.
@@ -264,7 +263,7 @@ def register_action_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def list_workflow_jobs(
         run_id: int,
-        repo: Optional[str] = None,
+        repo: str | None = None,
         per_page: int = 30,
         page: int = 1,
     ) -> list[dict]:
@@ -314,7 +313,7 @@ def register_action_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def get_workflow_logs_url(
         run_id: int,
-        repo: Optional[str] = None,
+        repo: str | None = None,
     ) -> dict:
         """
         Получить URL для скачивания логов workflow в репозитории текущего владельца.

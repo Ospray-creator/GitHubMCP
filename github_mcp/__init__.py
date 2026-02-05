@@ -14,7 +14,7 @@ GitHub MCP Server — полный контроль GitHub через Model Cont
 __version__ = "1.0.0"
 __author__ = "Ospray-creator"
 
-from .config import settings
 from .client import GitHubClient
+from .config import settings
 
 __all__ = ["settings", "GitHubClient", "__version__"]

@@ -7,7 +7,6 @@
 - Сравнения веток
 """
 
-from typing import Optional
 
 from mcp.server.fastmcp import FastMCP
 
@@ -20,7 +19,7 @@ def register_branch_tools(mcp: FastMCP, client: GitHubClient) -> None:
 
     @mcp.tool()
     async def list_branches(
-        repo: Optional[str] = None,
+        repo: str | None = None,
         per_page: int = 30,
         page: int = 1,
     ) -> list[dict]:
@@ -54,7 +53,7 @@ def register_branch_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def get_branch(
         branch: str,
-        repo: Optional[str] = None,
+        repo: str | None = None,
     ) -> dict:
         """
         Получить информацию о ветке компании текущего владельца.
@@ -89,7 +88,7 @@ def register_branch_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def create_branch(
         branch_name: str,
-        repo: Optional[str] = None,
+        repo: str | None = None,
         from_ref: str = "main",
     ) -> dict:
         """
@@ -120,7 +119,7 @@ def register_branch_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def delete_branch(
         branch: str,
-        repo: Optional[str] = None,
+        repo: str | None = None,
     ) -> dict:
         """
         Удалить ветку в репозитории текущего владельца.
@@ -146,9 +145,9 @@ def register_branch_tools(mcp: FastMCP, client: GitHubClient) -> None:
 
     @mcp.tool()
     async def list_commits(
-        repo: Optional[str] = None,
-        sha: Optional[str] = None,
-        path: Optional[str] = None,
+        repo: str | None = None,
+        sha: str | None = None,
+        path: str | None = None,
         per_page: int = 30,
         page: int = 1,
     ) -> list[dict]:
@@ -190,7 +189,7 @@ def register_branch_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def get_commit(
         ref: str,
-        repo: Optional[str] = None,
+        repo: str | None = None,
     ) -> dict:
         """
         Получить информацию о коммите в репозитории текущего владельца.
@@ -222,7 +221,7 @@ def register_branch_tools(mcp: FastMCP, client: GitHubClient) -> None:
     async def compare_branches(
         base: str,
         head: str,
-        repo: Optional[str] = None,
+        repo: str | None = None,
     ) -> dict:
         """
         Сравнить две ветки или коммита в репозитории текущего владельца.

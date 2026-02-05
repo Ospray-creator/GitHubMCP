@@ -3,18 +3,19 @@ HTTP транспорт для GitHub MCP Server с аутентификацие
 """
 
 import argparse
-import uvicorn
 import contextlib
 import logging
 import sys
+
+import uvicorn
 from starlette.applications import Starlette
 from starlette.middleware.cors import CORSMiddleware
+from starlette.responses import JSONResponse
 from starlette.routing import Mount
 from starlette.types import ASGIApp, Receive, Scope, Send
-from starlette.responses import JSONResponse
 
-from .server import mcp
 from .config import settings
+from .server import mcp
 
 # Настройка логирования
 logging.basicConfig(
@@ -142,9 +143,9 @@ def main():
 
     logger.info(f"🚀 Запуск GitHub MCP HTTP Server на http://{args.host}:{args.port}")
     if settings.mcp_api_key:
-        logger.info(f"🔐 Аутентификация включена (API Key настроен)")
+        logger.info("🔐 Аутентификация включена (API Key настроен)")
     else:
-        logger.info(f"⚠️ Аутентификация выключена (MCP_API_KEY не задан)")
+        logger.info("⚠️ Аутентификация выключена (MCP_API_KEY не задан)")
 
     logger.info(f"📍 Эндпоинт для OpenWebUI: http://192.168.1.10:{args.port}/mcp")
 

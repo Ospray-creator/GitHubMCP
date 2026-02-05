@@ -7,7 +7,6 @@
 - Работы с организациями
 """
 
-from typing import Optional
 
 from mcp.server.fastmcp import FastMCP
 
@@ -68,7 +67,7 @@ def register_user_tools(mcp: FastMCP, client: GitHubClient) -> None:
 
     @mcp.tool()
     async def list_followers(
-        username: Optional[str] = None,
+        username: str | None = None,
         per_page: int = 30,
         page: int = 1,
     ) -> list[dict]:
@@ -92,7 +91,7 @@ def register_user_tools(mcp: FastMCP, client: GitHubClient) -> None:
 
     @mcp.tool()
     async def list_following(
-        username: Optional[str] = None,
+        username: str | None = None,
         per_page: int = 30,
         page: int = 1,
     ) -> list[dict]:
@@ -116,7 +115,7 @@ def register_user_tools(mcp: FastMCP, client: GitHubClient) -> None:
 
     @mcp.tool()
     async def list_user_organizations(
-        username: Optional[str] = None,
+        username: str | None = None,
         per_page: int = 30,
         page: int = 1,
     ) -> list[dict]:

@@ -6,7 +6,7 @@
 
 import base64
 import logging
-from typing import Any, Optional
+from typing import Any
 
 import httpx
 
@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 class GitHubError(Exception):
     """Исключение для ошибок GitHub API."""
 
-    def __init__(self, message: str, status_code: Optional[int] = None):
+    def __init__(self, message: str, status_code: int | None = None):
         super().__init__(message)
         self.status_code = status_code
 
@@ -28,7 +28,7 @@ class GitHubClient:
 
     BASE_URL = "https://api.github.com"
 
-    def __init__(self, token: Optional[str] = None):
+    def __init__(self, token: str | None = None):
         """
         Инициализация клиента.
 
@@ -36,7 +36,7 @@ class GitHubClient:
             token: GitHub токен (если не указан, берётся из настроек)
         """
         self.token = token or settings.gh_token
-        self._client: Optional[httpx.AsyncClient] = None
+        self._client: httpx.AsyncClient | None = None
 
     @property
     def headers(self) -> dict[str, str]:
@@ -70,8 +70,8 @@ class GitHubClient:
         self,
         method: str,
         endpoint: str,
-        params: Optional[dict] = None,
-        json_data: Optional[dict] = None,
+        params: dict | None = None,
+        json_data: dict | None = None,
     ) -> Any:
         """
         Выполнить HTTP запрос к GitHub API.
@@ -142,7 +142,7 @@ class GitHubClient:
 
     async def list_user_repos(
         self,
-        username: Optional[str] = None,
+        username: str | None = None,
         type: str = "all",
         sort: str = "updated",
         per_page: int = 30,
@@ -181,7 +181,7 @@ class GitHubClient:
         description: str = "",
         private: bool = False,
         auto_init: bool = True,
-        org: Optional[str] = None,
+        org: str | None = None,
     ) -> dict:
         """Создать новый репозиторий."""
         data = {
@@ -206,8 +206,8 @@ class GitHubClient:
         self,
         owner: str,
         repo: str,
-        organization: Optional[str] = None,
-        name: Optional[str] = None,
+        organization: str | None = None,
+        name: str | None = None,
     ) -> dict:
         """Форкнуть репозиторий."""
         data = {}
@@ -249,7 +249,7 @@ class GitHubClient:
     # ========================
 
     async def get_contents(
-        self, owner: str, repo: str, path: str = "", ref: Optional[str] = None
+        self, owner: str, repo: str, path: str = "", ref: str | None = None
     ) -> dict | list[dict]:
         """Получить содержимое файла или директории."""
         params = {}
@@ -281,7 +281,7 @@ class GitHubClient:
         path: str,
         content: str,
         message: str,
-        branch: Optional[str] = None,
+        branch: str | None = None,
     ) -> dict:
         """Создать новый файл."""
         data = {
@@ -303,7 +303,7 @@ class GitHubClient:
         content: str,
         message: str,
         sha: str,
-        branch: Optional[str] = None,
+        branch: str | None = None,
     ) -> dict:
         """Обновить существующий файл."""
         data = {
@@ -325,7 +325,7 @@ class GitHubClient:
         path: str,
         message: str,
         sha: str,
-        branch: Optional[str] = None,
+        branch: str | None = None,
     ) -> dict:
         """Удалить файл."""
         data = {
@@ -384,8 +384,8 @@ class GitHubClient:
         self,
         owner: str,
         repo: str,
-        sha: Optional[str] = None,
-        path: Optional[str] = None,
+        sha: str | None = None,
+        path: str | None = None,
         per_page: int = 30,
         page: int = 1,
     ) -> list[dict]:
@@ -421,8 +421,8 @@ class GitHubClient:
         owner: str,
         repo: str,
         state: str = "open",
-        labels: Optional[str] = None,
-        assignee: Optional[str] = None,
+        labels: str | None = None,
+        assignee: str | None = None,
         per_page: int = 30,
         page: int = 1,
     ) -> list[dict]:
@@ -449,8 +449,8 @@ class GitHubClient:
         repo: str,
         title: str,
         body: str = "",
-        labels: Optional[list[str]] = None,
-        assignees: Optional[list[str]] = None,
+        labels: list[str] | None = None,
+        assignees: list[str] | None = None,
     ) -> dict:
         """Создать issue."""
         data = {"title": title, "body": body}
@@ -468,11 +468,11 @@ class GitHubClient:
         owner: str,
         repo: str,
         issue_number: int,
-        title: Optional[str] = None,
-        body: Optional[str] = None,
-        state: Optional[str] = None,
-        labels: Optional[list[str]] = None,
-        assignees: Optional[list[str]] = None,
+        title: str | None = None,
+        body: str | None = None,
+        state: str | None = None,
+        labels: list[str] | None = None,
+        assignees: list[str] | None = None,
     ) -> dict:
         """Обновить issue."""
         data = {}
@@ -539,8 +539,8 @@ class GitHubClient:
         owner: str,
         repo: str,
         state: str = "open",
-        head: Optional[str] = None,
-        base: Optional[str] = None,
+        head: str | None = None,
+        base: str | None = None,
         per_page: int = 30,
         page: int = 1,
     ) -> list[dict]:
@@ -585,10 +585,10 @@ class GitHubClient:
         owner: str,
         repo: str,
         pull_number: int,
-        title: Optional[str] = None,
-        body: Optional[str] = None,
-        state: Optional[str] = None,
-        base: Optional[str] = None,
+        title: str | None = None,
+        body: str | None = None,
+        state: str | None = None,
+        base: str | None = None,
     ) -> dict:
         """Обновить pull request."""
         data = {}
@@ -610,8 +610,8 @@ class GitHubClient:
         owner: str,
         repo: str,
         pull_number: int,
-        commit_title: Optional[str] = None,
-        commit_message: Optional[str] = None,
+        commit_title: str | None = None,
+        commit_message: str | None = None,
         merge_method: str = "merge",
     ) -> dict:
         """Мержить pull request."""
@@ -696,7 +696,7 @@ class GitHubClient:
         repo: str,
         workflow_id: int | str,
         ref: str = "main",
-        inputs: Optional[dict] = None,
+        inputs: dict | None = None,
     ) -> dict:
         """Запустить workflow."""
         data = {"ref": ref}
@@ -713,8 +713,8 @@ class GitHubClient:
         self,
         owner: str,
         repo: str,
-        workflow_id: Optional[int | str] = None,
-        status: Optional[str] = None,
+        workflow_id: int | str | None = None,
+        status: str | None = None,
         per_page: int = 30,
         page: int = 1,
     ) -> dict:
@@ -776,7 +776,7 @@ class GitHubClient:
         return await self._request("GET", f"/users/{username}")
 
     async def list_followers(
-        self, username: Optional[str] = None, per_page: int = 30, page: int = 1
+        self, username: str | None = None, per_page: int = 30, page: int = 1
     ) -> list[dict]:
         """Список подписчиков."""
         if username:
@@ -789,7 +789,7 @@ class GitHubClient:
         )
 
     async def list_following(
-        self, username: Optional[str] = None, per_page: int = 30, page: int = 1
+        self, username: str | None = None, per_page: int = 30, page: int = 1
     ) -> list[dict]:
         """Список подписок."""
         if username:
@@ -802,7 +802,7 @@ class GitHubClient:
         )
 
     async def list_user_orgs(
-        self, username: Optional[str] = None, per_page: int = 30, page: int = 1
+        self, username: str | None = None, per_page: int = 30, page: int = 1
     ) -> list[dict]:
         """Список организаций пользователя."""
         if username:
@@ -819,7 +819,7 @@ class GitHubClient:
     # ========================
 
     async def list_gists(
-        self, username: Optional[str] = None, per_page: int = 30, page: int = 1
+        self, username: str | None = None, per_page: int = 30, page: int = 1
     ) -> list[dict]:
         """Список gists."""
         if username:
@@ -855,8 +855,8 @@ class GitHubClient:
     async def update_gist(
         self,
         gist_id: str,
-        files: Optional[dict[str, dict[str, str]]] = None,
-        description: Optional[str] = None,
+        files: dict[str, dict[str, str]] | None = None,
+        description: str | None = None,
     ) -> dict:
         """Обновить gist."""
         data = {}

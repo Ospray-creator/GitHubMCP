@@ -122,7 +122,7 @@ def register_search_tools(mcp: FastMCP, client: GitHubClient) -> None:
                     "html_url": i.get("html_url"),
                     "repository_url": i.get("repository_url"),
                     "author": i.get("user", {}).get("login"),
-                    "labels": [l.get("name") for l in i.get("labels", [])],
+                    "labels": [label.get("name") for label in i.get("labels", [])],
                     "created_at": i.get("created_at"),
                     "is_pull_request": "pull_request" in i,
                 }

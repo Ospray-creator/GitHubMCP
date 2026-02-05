@@ -5,9 +5,7 @@
 с валидацией и значениями по умолчанию.
 """
 
-from pathlib import Path
 from functools import lru_cache
-from typing import Optional
 
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -28,11 +26,11 @@ class Settings(BaseSettings):
         default="",
         description="GitHub Personal Access Token с необходимыми правами",
     )
-    gh_default_owner: Optional[str] = Field(
+    gh_default_owner: str | None = Field(
         default=None,
         description="Владелец репозитория по умолчанию (username или организация)",
     )
-    gh_default_repo: Optional[str] = Field(
+    gh_default_repo: str | None = Field(
         default=None,
         description="Репозиторий по умолчанию",
     )
@@ -49,14 +47,14 @@ class Settings(BaseSettings):
         default="GitHub MCP Server",
         description="Название MCP сервера",
     )
-    mcp_api_key: Optional[str] = Field(
+    mcp_api_key: str | None = Field(
         default=None,
         description="API Key для доступа к HTTP серверу (X-API-Key или Bearer)",
     )
 
     # Runtime состояние (не из env)
-    _runtime_owner: Optional[str] = None
-    _runtime_repo: Optional[str] = None
+    _runtime_owner: str | None = None
+    _runtime_repo: str | None = None
 
     @field_validator("gh_token")
     @classmethod
@@ -70,7 +68,7 @@ class Settings(BaseSettings):
         return v
 
     @property
-    def allowed_repos_list(self) -> list[tuple[str, Optional[str]]]:
+    def allowed_repos_list(self) -> list[tuple[str, str | None]]:
         """Парсинг списка разрешённых репозиториев."""
         if not self.gh_allowed_repos:
             return []
@@ -107,7 +105,7 @@ class Settings(BaseSettings):
         return False
 
     def get_owner_repo(
-        self, owner: Optional[str] = None, repo: Optional[str] = None
+        self, owner: str | None = None, repo: str | None = None
     ) -> tuple[str, str]:
         """Получить owner/repo с учётом runtime и default значений."""
         # Очищаем входные данные от пробелов

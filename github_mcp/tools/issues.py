@@ -7,7 +7,6 @@
 - Работы с комментариями
 """
 
-from typing import Optional
 
 from mcp.server.fastmcp import FastMCP
 
@@ -20,10 +19,10 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
 
     @mcp.tool()
     async def list_issues(
-        repo: Optional[str] = None,
+        repo: str | None = None,
         state: str = "open",
-        labels: Optional[str] = None,
-        assignee: Optional[str] = None,
+        labels: str | None = None,
+        assignee: str | None = None,
         per_page: int = 30,
         page: int = 1,
     ) -> list[dict]:
@@ -57,7 +56,7 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
                 "state": i.get("state"),
                 "html_url": i.get("html_url"),
                 "author": i.get("user", {}).get("login"),
-                "labels": [l.get("name") for l in i.get("labels", [])],
+                "labels": [label.get("name") for label in i.get("labels", [])],
                 "assignees": [a.get("login") for a in i.get("assignees", [])],
                 "comments": i.get("comments"),
                 "created_at": i.get("created_at"),
@@ -70,7 +69,7 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def get_issue(
         issue_number: int,
-        repo: Optional[str] = None,
+        repo: str | None = None,
     ) -> dict:
         """
         Получить информацию об issue в репозитории текущего владельца.
@@ -94,7 +93,7 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
             "state": result.get("state"),
             "html_url": result.get("html_url"),
             "author": result.get("user", {}).get("login"),
-            "labels": [l.get("name") for l in result.get("labels", [])],
+            "labels": [label.get("name") for label in result.get("labels", [])],
             "assignees": [a.get("login") for a in result.get("assignees", [])],
             "milestone": (
                 result.get("milestone", {}).get("title")
@@ -110,10 +109,10 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def create_issue(
         title: str,
-        repo: Optional[str] = None,
+        repo: str | None = None,
         body: str = "",
-        labels: Optional[str] = None,
-        assignees: Optional[str] = None,
+        labels: str | None = None,
+        assignees: str | None = None,
     ) -> dict:
         """
         Создать новый issue в репозитории текущего владельца.
@@ -132,7 +131,7 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
                 "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
             }
 
-        labels_list = [l.strip() for l in labels.split(",")] if labels else None
+        labels_list = [label.strip() for label in labels.split(",")] if labels else None
         assignees_list = (
             [a.strip() for a in assignees.split(",")] if assignees else None
         )
@@ -150,12 +149,12 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def update_issue(
         issue_number: int,
-        repo: Optional[str] = None,
-        title: Optional[str] = None,
-        body: Optional[str] = None,
-        state: Optional[str] = None,
-        labels: Optional[str] = None,
-        assignees: Optional[str] = None,
+        repo: str | None = None,
+        title: str | None = None,
+        body: str | None = None,
+        state: str | None = None,
+        labels: str | None = None,
+        assignees: str | None = None,
     ) -> dict:
         """
         Обновить issue в репозитории текущего владельца.
@@ -176,7 +175,7 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
                 "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
             }
 
-        labels_list = [l.strip() for l in labels.split(",")] if labels else None
+        labels_list = [label.strip() for label in labels.split(",")] if labels else None
         assignees_list = (
             [a.strip() for a in assignees.split(",")] if assignees else None
         )
@@ -202,7 +201,7 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def close_issue(
         issue_number: int,
-        repo: Optional[str] = None,
+        repo: str | None = None,
     ) -> dict:
         """
         Закрыть issue в репозитории текущего владельца.
@@ -230,7 +229,7 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def list_issue_comments(
         issue_number: int,
-        repo: Optional[str] = None,
+        repo: str | None = None,
         per_page: int = 30,
         page: int = 1,
     ) -> list[dict]:
@@ -271,7 +270,7 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
     async def create_issue_comment(
         issue_number: int,
         body: str,
-        repo: Optional[str] = None,
+        repo: str | None = None,
     ) -> dict:
         """
         Добавить комментарий к issue в репозитории текущего владельца.
@@ -299,7 +298,7 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
 
     @mcp.tool()
     async def list_labels(
-        repo: Optional[str] = None,
+        repo: str | None = None,
     ) -> list[dict]:
         """
         Получить список меток репозитория текущего владельца.
@@ -319,18 +318,18 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
         labels = await client.list_labels(final_owner, final_repo)
         return [
             {
-                "name": l.get("name"),
-                "color": l.get("color"),
-                "description": l.get("description"),
+                "name": label.get("name"),
+                "color": label.get("color"),
+                "description": label.get("description"),
             }
-            for l in labels
+            for label in labels
         ]
 
     @mcp.tool()
     async def add_labels(
         issue_number: int,
         labels: str,
-        repo: Optional[str] = None,
+        repo: str | None = None,
     ) -> dict:
         """
         Добавить метки к issue в репозитории текущего владельца.
@@ -347,11 +346,11 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
                 "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
             }
 
-        labels_list = [l.strip() for l in labels.split(",")]
+        labels_list = [label.strip() for label in labels.split(",")]
         result = await client.add_labels(
             final_owner, final_repo, issue_number, labels_list
         )
         return {
             "status": "success",
-            "labels": [l.get("name") for l in result],
+            "labels": [label.get("name") for label in result],
         }

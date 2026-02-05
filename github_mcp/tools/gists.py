@@ -5,7 +5,6 @@
 - Создания, чтения, обновления и удаления Gists
 """
 
-from typing import Optional
 
 from mcp.server.fastmcp import FastMCP
 
@@ -133,9 +132,9 @@ def register_gist_tools(mcp: FastMCP, client: GitHubClient) -> None:
     @mcp.tool()
     async def update_gist(
         gist_id: str,
-        filename: Optional[str] = None,
-        content: Optional[str] = None,
-        description: Optional[str] = None,
+        filename: str | None = None,
+        content: str | None = None,
+        description: str | None = None,
     ) -> dict:
         """
         Обновить Gist.
