@@ -35,7 +35,11 @@ def register_action_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return [{"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}]
+            return [
+                {
+                    "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+                }
+            ]
 
         result = await client.list_workflows(final_owner, final_repo, per_page, page)
         workflows = result.get("workflows", [])
@@ -67,7 +71,9 @@ def register_action_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         result = await client.get_workflow(final_owner, final_repo, workflow_id)
         return {
@@ -102,7 +108,9 @@ def register_action_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         inputs_dict = None
         if inputs:
@@ -111,7 +119,9 @@ def register_action_tools(mcp: FastMCP, client: GitHubClient) -> None:
             except json_module.JSONDecodeError:
                 return {"error": "Некорректный JSON в параметре inputs"}
 
-        await client.trigger_workflow(final_owner, final_repo, workflow_id, ref, inputs_dict)
+        await client.trigger_workflow(
+            final_owner, final_repo, workflow_id, ref, inputs_dict
+        )
         return {
             "status": "success",
             "message": f"Workflow {workflow_id} запущен на ветке {ref}",
@@ -138,7 +148,11 @@ def register_action_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return [{"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}]
+            return [
+                {
+                    "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+                }
+            ]
 
         result = await client.list_workflow_runs(
             final_owner, final_repo, workflow_id, status, per_page, page
@@ -176,7 +190,9 @@ def register_action_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         result = await client.get_workflow_run(final_owner, final_repo, run_id)
         return {
@@ -210,7 +226,9 @@ def register_action_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         await client.cancel_workflow_run(final_owner, final_repo, run_id)
         return {
@@ -233,7 +251,9 @@ def register_action_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         await client.rerun_workflow(final_owner, final_repo, run_id)
         return {
@@ -260,7 +280,11 @@ def register_action_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return [{"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}]
+            return [
+                {
+                    "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+                }
+            ]
 
         result = await client.list_workflow_jobs(
             final_owner, final_repo, run_id, per_page, page
@@ -302,7 +326,9 @@ def register_action_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         logs_url = await client.download_workflow_logs(final_owner, final_repo, run_id)
         return {

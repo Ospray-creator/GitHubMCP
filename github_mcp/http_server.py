@@ -24,11 +24,13 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+
 class AuthMiddleware:
     """
     Middleware для проверки API Key.
     Поддерживает заголовок X-API-Key и Authorization: Bearer <key>.
     """
+
     def __init__(self, app: ASGIApp):
         self.app = app
 
@@ -44,10 +46,10 @@ class AuthMiddleware:
 
         # Извлекаем заголовки
         headers = dict(scope.get("headers", []))
-        
+
         # Проверяем X-API-Key
         api_key = headers.get(b"x-api-key", b"").decode()
-        
+
         # Проверяем Authorization: Bearer
         auth_header = headers.get(b"authorization", b"").decode()
         if not api_key and auth_header.startswith("Bearer "):
@@ -56,24 +58,29 @@ class AuthMiddleware:
         if api_key != settings.mcp_api_key:
             logger.warning(f"Unauthorized access attempt from {scope.get('client')}")
             response = JSONResponse(
-                {"detail": "Unauthorized: Invalid API Key"}, 
-                status_code=401
+                {"detail": "Unauthorized: Invalid API Key"}, status_code=401
             )
             await response(scope, receive, send)
             return
 
         await self.app(scope, receive, send)
 
+
 class ForceSSEMiddleware:
     """
     Middleware для форсирования заголовка 'Accept: text/event-stream'.
     Исправляет ошибку '406 Not Acceptable' для клиентов, которые не отправляют этот заголовок.
     """
+
     def __init__(self, app: ASGIApp):
         self.app = app
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send):
-        if scope["type"] == "http" and scope["path"].endswith("/mcp") and scope["method"] == "GET":
+        if (
+            scope["type"] == "http"
+            and scope["path"].endswith("/mcp")
+            and scope["method"] == "GET"
+        ):
             new_headers = []
             has_accept = False
             for k, v in scope["headers"]:
@@ -87,6 +94,7 @@ class ForceSSEMiddleware:
             scope["headers"] = new_headers
         await self.app(scope, receive, send)
 
+
 @contextlib.asynccontextmanager
 async def lifespan(app: Starlette):
     """Жизненный цикл для инициализации сессий."""
@@ -94,6 +102,7 @@ async def lifespan(app: Starlette):
     async with mcp.session_manager.run():
         yield
     logger.info("Менеджер сессий MCP остановлен.")
+
 
 def create_app() -> Starlette:
     app = Starlette(
@@ -121,6 +130,7 @@ def create_app() -> Starlette:
 
     return app
 
+
 def main():
     parser = argparse.ArgumentParser(description="GitHub MCP HTTP Server")
     parser.add_argument("--host", default="0.0.0.0", help="Хост")
@@ -135,7 +145,7 @@ def main():
         logger.info(f"🔐 Аутентификация включена (API Key настроен)")
     else:
         logger.info(f"⚠️ Аутентификация выключена (MCP_API_KEY не задан)")
-    
+
     logger.info(f"📍 Эндпоинт для OpenWebUI: http://192.168.1.10:{args.port}/mcp")
 
     uvicorn.run(
@@ -146,6 +156,7 @@ def main():
         proxy_headers=True,
         forwarded_allow_ips="*",
     )
+
 
 if __name__ == "__main__":
     main()

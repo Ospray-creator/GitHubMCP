@@ -34,12 +34,16 @@ def register_file_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         result = await client.get_contents(final_owner, final_repo, path, ref)
 
         if isinstance(result, list):
-            return {"error": f"Путь {path} — это директория, используйте get_directory_content"}
+            return {
+                "error": f"Путь {path} — это директория, используйте get_directory_content"
+            }
 
         return {
             "name": result.get("name"),
@@ -69,7 +73,11 @@ def register_file_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return [{"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}]
+            return [
+                {
+                    "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+                }
+            ]
 
         result = await client.get_contents(final_owner, final_repo, path, ref)
 
@@ -114,7 +122,9 @@ def register_file_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         result = await client.create_file(
             final_owner, final_repo, path, content, message, branch
@@ -152,7 +162,9 @@ def register_file_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         result = await client.update_file(
             final_owner, final_repo, path, content, message, sha, branch
@@ -188,7 +200,9 @@ def register_file_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         result = await client.delete_file(
             final_owner, final_repo, path, message, sha, branch

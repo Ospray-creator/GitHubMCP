@@ -41,7 +41,11 @@ def register_pr_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return [{"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}]
+            return [
+                {
+                    "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+                }
+            ]
 
         prs = await client.list_pull_requests(
             final_owner, final_repo, state, head, base, per_page, page
@@ -78,7 +82,9 @@ def register_pr_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         result = await client.get_pull_request(final_owner, final_repo, pull_number)
         return {
@@ -94,7 +100,11 @@ def register_pr_tools(mcp: FastMCP, client: GitHubClient) -> None:
             "mergeable": result.get("mergeable"),
             "mergeable_state": result.get("mergeable_state"),
             "merged": result.get("merged"),
-            "merged_by": result.get("merged_by", {}).get("login") if result.get("merged_by") else None,
+            "merged_by": (
+                result.get("merged_by", {}).get("login")
+                if result.get("merged_by")
+                else None
+            ),
             "commits": result.get("commits"),
             "additions": result.get("additions"),
             "deletions": result.get("deletions"),
@@ -127,7 +137,9 @@ def register_pr_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         result = await client.create_pull_request(
             final_owner, final_repo, title, head, base, body, draft
@@ -163,7 +175,9 @@ def register_pr_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         result = await client.update_pull_request(
             final_owner, final_repo, pull_number, title, body, state, base
@@ -197,10 +211,17 @@ def register_pr_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         result = await client.merge_pull_request(
-            final_owner, final_repo, pull_number, commit_title, commit_message, merge_method
+            final_owner,
+            final_repo,
+            pull_number,
+            commit_title,
+            commit_message,
+            merge_method,
         )
         return {
             "status": "success",
@@ -228,7 +249,11 @@ def register_pr_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return [{"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}]
+            return [
+                {
+                    "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+                }
+            ]
 
         commits = await client.list_pr_commits(
             final_owner, final_repo, pull_number, per_page, page
@@ -262,7 +287,11 @@ def register_pr_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return [{"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}]
+            return [
+                {
+                    "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+                }
+            ]
 
         files = await client.list_pr_files(
             final_owner, final_repo, pull_number, per_page, page
@@ -274,7 +303,11 @@ def register_pr_tools(mcp: FastMCP, client: GitHubClient) -> None:
                 "additions": f.get("additions"),
                 "deletions": f.get("deletions"),
                 "changes": f.get("changes"),
-                "patch": f.get("patch", "")[:500] + "..." if len(f.get("patch", "")) > 500 else f.get("patch"),
+                "patch": (
+                    f.get("patch", "")[:500] + "..."
+                    if len(f.get("patch", "")) > 500
+                    else f.get("patch")
+                ),
             }
             for f in files
         ]
@@ -298,7 +331,9 @@ def register_pr_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         result = await client.create_pr_review(
             final_owner, final_repo, pull_number, body, event
@@ -329,7 +364,11 @@ def register_pr_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return [{"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}]
+            return [
+                {
+                    "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+                }
+            ]
 
         comments = await client.list_pr_comments(
             final_owner, final_repo, pull_number, per_page, page

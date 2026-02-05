@@ -52,7 +52,9 @@ def register_repository_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         result = await client.get_repository(final_owner, final_repo)
         return {
@@ -124,7 +126,9 @@ def register_repository_tools(mcp: FastMCP, client: GitHubClient) -> None:
             private: Приватный репозиторий (default: False)
             auto_init: Инициализировать с README (default: True)
         """
-        result = await client.create_repository(name, description, private, auto_init, None)
+        result = await client.create_repository(
+            name, description, private, auto_init, None
+        )
         return {
             "status": "success",
             "name": result.get("name"),
@@ -149,7 +153,9 @@ def register_repository_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         await client.delete_repository(final_owner, final_repo)
         return {
@@ -198,7 +204,11 @@ def register_repository_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return [{"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}]
+            return [
+                {
+                    "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+                }
+            ]
 
         forks = await client.list_forks(final_owner, final_repo, per_page, page)
         return [
@@ -228,9 +238,15 @@ def register_repository_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return [{"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}]
+            return [
+                {
+                    "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+                }
+            ]
 
-        contributors = await client.list_contributors(final_owner, final_repo, per_page, page)
+        contributors = await client.list_contributors(
+            final_owner, final_repo, per_page, page
+        )
         return [
             {
                 "login": c.get("login"),
@@ -254,6 +270,8 @@ def register_repository_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         return await client.list_languages(final_owner, final_repo)

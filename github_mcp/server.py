@@ -47,7 +47,7 @@ async def lifespan(server: FastMCP) -> AsyncIterator[dict[str, Any]]:
 
     if not settings.gh_token:
         logger.warning("GH_TOKEN не установлен!")
-    
+
     # Используем глобальный клиент или создаем новый для проверки
     client = GitHubClient()
     try:
@@ -68,7 +68,7 @@ mcp = FastMCP(
     name=settings.server_name,
     lifespan=lifespan,
     stateless_http=True,  # Рекомендуется для HTTP/Web клиентов
-    json_response=True,    # Рекомендуется для HTTP/Web клиентов
+    json_response=True,  # Рекомендуется для HTTP/Web клиентов
     # НАСТРОЙКИ БЕЗОПАСНОСТИ: Разрешаем всё для локальной сети
     transport_security=TransportSecuritySettings(
         enable_dns_rebinding_protection=False,

@@ -35,7 +35,11 @@ def register_branch_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return [{"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}]
+            return [
+                {
+                    "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+                }
+            ]
 
         branches = await client.list_branches(final_owner, final_repo, per_page, page)
         return [
@@ -62,7 +66,9 @@ def register_branch_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         result = await client.get_branch(final_owner, final_repo, branch)
         return {
@@ -70,8 +76,14 @@ def register_branch_tools(mcp: FastMCP, client: GitHubClient) -> None:
             "sha": result.get("commit", {}).get("sha"),
             "protected": result.get("protected"),
             "commit_message": result.get("commit", {}).get("commit", {}).get("message"),
-            "commit_author": result.get("commit", {}).get("commit", {}).get("author", {}).get("name"),
-            "commit_date": result.get("commit", {}).get("commit", {}).get("author", {}).get("date"),
+            "commit_author": result.get("commit", {})
+            .get("commit", {})
+            .get("author", {})
+            .get("name"),
+            "commit_date": result.get("commit", {})
+            .get("commit", {})
+            .get("author", {})
+            .get("date"),
         }
 
     @mcp.tool()
@@ -91,9 +103,13 @@ def register_branch_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
-        result = await client.create_branch(final_owner, final_repo, branch_name, from_ref)
+        result = await client.create_branch(
+            final_owner, final_repo, branch_name, from_ref
+        )
         return {
             "status": "success",
             "ref": result.get("ref"),
@@ -118,7 +134,9 @@ def register_branch_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         await client.delete_branch(final_owner, final_repo, branch)
         return {
@@ -147,13 +165,21 @@ def register_branch_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return [{"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}]
+            return [
+                {
+                    "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+                }
+            ]
 
-        commits = await client.list_commits(final_owner, final_repo, sha, path, per_page, page)
+        commits = await client.list_commits(
+            final_owner, final_repo, sha, path, per_page, page
+        )
         return [
             {
                 "sha": c.get("sha"),
-                "message": c.get("commit", {}).get("message", "").split("\n")[0],  # Первая строка
+                "message": c.get("commit", {})
+                .get("message", "")
+                .split("\n")[0],  # Первая строка
                 "author": c.get("commit", {}).get("author", {}).get("name"),
                 "date": c.get("commit", {}).get("author", {}).get("date"),
                 "html_url": c.get("html_url"),
@@ -176,7 +202,9 @@ def register_branch_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         result = await client.get_commit(final_owner, final_repo, ref)
         return {
@@ -207,7 +235,9 @@ def register_branch_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         result = await client.compare_commits(final_owner, final_repo, base, head)
         return {

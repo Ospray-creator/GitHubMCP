@@ -27,7 +27,7 @@ def register_gist_tools(mcp: FastMCP, client: GitHubClient) -> None:
             per_page: Количество на странице (макс. 100)
             page: Номер страницы
         """
-        #username=None означает текущего пользователя
+        # username=None означает текущего пользователя
         gists = await client.list_gists(None, per_page, page)
         return [
             {

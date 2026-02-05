@@ -62,7 +62,9 @@ class Settings(BaseSettings):
     @classmethod
     def validate_token(cls, v: str) -> str:
         """Валидация токена GitHub."""
-        if v and not (v.startswith("ghp_") or v.startswith("github_pat_") or v.startswith("gho_")):
+        if v and not (
+            v.startswith("ghp_") or v.startswith("github_pat_") or v.startswith("gho_")
+        ):
             # Разрешаем токены старого формата тоже
             pass
         return v
@@ -112,11 +114,19 @@ class Settings(BaseSettings):
         o = (owner or "").strip()
         r = (repo or "").strip()
 
-        # ОСНОВНОЕ ПРАВИЛО: Если owner не указан или это плейсхолдер "user", 
+        # ОСНОВНОЕ ПРАВИЛО: Если owner не указан или это плейсхолдер "user",
         # используем владельца из настроек.
         # Это предотвращает ошибки, когда модель говорит "user/repo"
-        final_owner = o if (o and o.lower() != "user") else (self._runtime_owner or self.gh_default_owner)
-        final_repo = r if (r and r.lower() != "repo") else (self._runtime_repo or self.gh_default_repo)
+        final_owner = (
+            o
+            if (o and o.lower() != "user")
+            else (self._runtime_owner or self.gh_default_owner)
+        )
+        final_repo = (
+            r
+            if (r and r.lower() != "repo")
+            else (self._runtime_repo or self.gh_default_repo)
+        )
 
         if not final_owner:
             error_msg = (
@@ -124,7 +134,7 @@ class Settings(BaseSettings):
                 "Проверьте GH_DEFAULT_OWNER в .env или установите через set_default_repo."
             )
             raise ValueError(error_msg)
-            
+
         if not final_repo:
             # Мы разрешаем repo быть None только в специфических случаях (например, list_user_repos),
             # но get_owner_repo обычно вызывается там, где repo обязателен.

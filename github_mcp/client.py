@@ -106,12 +106,16 @@ class GitHubClient:
                     if "message" in error_data:
                         error_message = error_data["message"]
                     if "errors" in error_data:
-                        errors = [e.get("message", str(e)) for e in error_data["errors"]]
+                        errors = [
+                            e.get("message", str(e)) for e in error_data["errors"]
+                        ]
                         error_message += f" ({', '.join(errors)})"
                 except Exception:
                     error_message = response.text or error_message
 
-                logger.error(f"GitHub API error: {response.status_code} {method} {response.url} - {error_message}")
+                logger.error(
+                    f"GitHub API error: {response.status_code} {method} {response.url} - {error_message}"
+                )
                 raise GitHubError(error_message, response.status_code)
 
             # Пустой ответ (204 No Content)
@@ -212,7 +216,9 @@ class GitHubClient:
         if name:
             data["name"] = name
 
-        return await self._request("POST", f"/repos/{owner}/{repo}/forks", json_data=data or None)
+        return await self._request(
+            "POST", f"/repos/{owner}/{repo}/forks", json_data=data or None
+        )
 
     async def list_forks(
         self, owner: str, repo: str, per_page: int = 30, page: int = 1
@@ -255,7 +261,11 @@ class GitHubClient:
         )
 
         # Декодирование base64 содержимого файла
-        if isinstance(result, dict) and result.get("encoding") == "base64" and "content" in result:
+        if (
+            isinstance(result, dict)
+            and result.get("encoding") == "base64"
+            and "content" in result
+        ):
             try:
                 result["content"] = base64.b64decode(result["content"]).decode("utf-8")
                 result["encoding"] = "utf-8"
@@ -281,7 +291,9 @@ class GitHubClient:
         if branch:
             data["branch"] = branch
 
-        return await self._request("PUT", f"/repos/{owner}/{repo}/contents/{path}", json_data=data)
+        return await self._request(
+            "PUT", f"/repos/{owner}/{repo}/contents/{path}", json_data=data
+        )
 
     async def update_file(
         self,
@@ -302,7 +314,9 @@ class GitHubClient:
         if branch:
             data["branch"] = branch
 
-        return await self._request("PUT", f"/repos/{owner}/{repo}/contents/{path}", json_data=data)
+        return await self._request(
+            "PUT", f"/repos/{owner}/{repo}/contents/{path}", json_data=data
+        )
 
     async def delete_file(
         self,
@@ -348,7 +362,9 @@ class GitHubClient:
     ) -> dict:
         """Создать новую ветку."""
         # Получить SHA исходной ветки
-        ref_data = await self._request("GET", f"/repos/{owner}/{repo}/git/ref/heads/{from_ref}")
+        ref_data = await self._request(
+            "GET", f"/repos/{owner}/{repo}/git/ref/heads/{from_ref}"
+        )
         sha = ref_data["object"]["sha"]
 
         # Создать новую ветку
@@ -360,7 +376,9 @@ class GitHubClient:
 
     async def delete_branch(self, owner: str, repo: str, branch: str) -> dict:
         """Удалить ветку."""
-        return await self._request("DELETE", f"/repos/{owner}/{repo}/git/refs/heads/{branch}")
+        return await self._request(
+            "DELETE", f"/repos/{owner}/{repo}/git/refs/heads/{branch}"
+        )
 
     async def list_commits(
         self,
@@ -378,15 +396,21 @@ class GitHubClient:
         if path:
             params["path"] = path
 
-        return await self._request("GET", f"/repos/{owner}/{repo}/commits", params=params)
+        return await self._request(
+            "GET", f"/repos/{owner}/{repo}/commits", params=params
+        )
 
     async def get_commit(self, owner: str, repo: str, ref: str) -> dict:
         """Информация о коммите."""
         return await self._request("GET", f"/repos/{owner}/{repo}/commits/{ref}")
 
-    async def compare_commits(self, owner: str, repo: str, base: str, head: str) -> dict:
+    async def compare_commits(
+        self, owner: str, repo: str, base: str, head: str
+    ) -> dict:
         """Сравнить две ветки/коммита."""
-        return await self._request("GET", f"/repos/{owner}/{repo}/compare/{base}...{head}")
+        return await self._request(
+            "GET", f"/repos/{owner}/{repo}/compare/{base}...{head}"
+        )
 
     # ========================
     # Issues
@@ -409,11 +433,15 @@ class GitHubClient:
         if assignee:
             params["assignee"] = assignee
 
-        return await self._request("GET", f"/repos/{owner}/{repo}/issues", params=params)
+        return await self._request(
+            "GET", f"/repos/{owner}/{repo}/issues", params=params
+        )
 
     async def get_issue(self, owner: str, repo: str, issue_number: int) -> dict:
         """Получить issue."""
-        return await self._request("GET", f"/repos/{owner}/{repo}/issues/{issue_number}")
+        return await self._request(
+            "GET", f"/repos/{owner}/{repo}/issues/{issue_number}"
+        )
 
     async def create_issue(
         self,
@@ -431,7 +459,9 @@ class GitHubClient:
         if assignees:
             data["assignees"] = assignees
 
-        return await self._request("POST", f"/repos/{owner}/{repo}/issues", json_data=data)
+        return await self._request(
+            "POST", f"/repos/{owner}/{repo}/issues", json_data=data
+        )
 
     async def update_issue(
         self,
@@ -462,7 +492,12 @@ class GitHubClient:
         )
 
     async def list_issue_comments(
-        self, owner: str, repo: str, issue_number: int, per_page: int = 30, page: int = 1
+        self,
+        owner: str,
+        repo: str,
+        issue_number: int,
+        per_page: int = 30,
+        page: int = 1,
     ) -> list[dict]:
         """Список комментариев к issue."""
         return await self._request(
@@ -651,7 +686,9 @@ class GitHubClient:
 
     async def get_workflow(self, owner: str, repo: str, workflow_id: int | str) -> dict:
         """Информация о workflow."""
-        return await self._request("GET", f"/repos/{owner}/{repo}/actions/workflows/{workflow_id}")
+        return await self._request(
+            "GET", f"/repos/{owner}/{repo}/actions/workflows/{workflow_id}"
+        )
 
     async def trigger_workflow(
         self,
@@ -695,15 +732,21 @@ class GitHubClient:
 
     async def get_workflow_run(self, owner: str, repo: str, run_id: int) -> dict:
         """Информация о запуске workflow."""
-        return await self._request("GET", f"/repos/{owner}/{repo}/actions/runs/{run_id}")
+        return await self._request(
+            "GET", f"/repos/{owner}/{repo}/actions/runs/{run_id}"
+        )
 
     async def cancel_workflow_run(self, owner: str, repo: str, run_id: int) -> dict:
         """Отменить запуск workflow."""
-        return await self._request("POST", f"/repos/{owner}/{repo}/actions/runs/{run_id}/cancel")
+        return await self._request(
+            "POST", f"/repos/{owner}/{repo}/actions/runs/{run_id}/cancel"
+        )
 
     async def rerun_workflow(self, owner: str, repo: str, run_id: int) -> dict:
         """Перезапустить workflow."""
-        return await self._request("POST", f"/repos/{owner}/{repo}/actions/runs/{run_id}/rerun")
+        return await self._request(
+            "POST", f"/repos/{owner}/{repo}/actions/runs/{run_id}/rerun"
+        )
 
     async def list_workflow_jobs(
         self, owner: str, repo: str, run_id: int, per_page: int = 30, page: int = 1
@@ -832,9 +875,7 @@ class GitHubClient:
     # Поиск
     # ========================
 
-    async def search_code(
-        self, query: str, per_page: int = 30, page: int = 1
-    ) -> dict:
+    async def search_code(self, query: str, per_page: int = 30, page: int = 1) -> dict:
         """Поиск по коду."""
         return await self._request(
             "GET",

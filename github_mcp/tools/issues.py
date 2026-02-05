@@ -41,7 +41,11 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return [{"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}]
+            return [
+                {
+                    "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+                }
+            ]
 
         issues = await client.list_issues(
             final_owner, final_repo, state, labels, assignee, per_page, page
@@ -78,7 +82,9 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         result = await client.get_issue(final_owner, final_repo, issue_number)
         return {
@@ -90,7 +96,11 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
             "author": result.get("user", {}).get("login"),
             "labels": [l.get("name") for l in result.get("labels", [])],
             "assignees": [a.get("login") for a in result.get("assignees", [])],
-            "milestone": result.get("milestone", {}).get("title") if result.get("milestone") else None,
+            "milestone": (
+                result.get("milestone", {}).get("title")
+                if result.get("milestone")
+                else None
+            ),
             "comments": result.get("comments"),
             "created_at": result.get("created_at"),
             "updated_at": result.get("updated_at"),
@@ -118,10 +128,14 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         labels_list = [l.strip() for l in labels.split(",")] if labels else None
-        assignees_list = [a.strip() for a in assignees.split(",")] if assignees else None
+        assignees_list = (
+            [a.strip() for a in assignees.split(",")] if assignees else None
+        )
 
         result = await client.create_issue(
             final_owner, final_repo, title, body, labels_list, assignees_list
@@ -158,13 +172,24 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         labels_list = [l.strip() for l in labels.split(",")] if labels else None
-        assignees_list = [a.strip() for a in assignees.split(",")] if assignees else None
+        assignees_list = (
+            [a.strip() for a in assignees.split(",")] if assignees else None
+        )
 
         result = await client.update_issue(
-            final_owner, final_repo, issue_number, title, body, state, labels_list, assignees_list
+            final_owner,
+            final_repo,
+            issue_number,
+            title,
+            body,
+            state,
+            labels_list,
+            assignees_list,
         )
         return {
             "status": "success",
@@ -189,7 +214,9 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         result = await client.update_issue(
             final_owner, final_repo, issue_number, state="closed"
@@ -219,7 +246,11 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return [{"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}]
+            return [
+                {
+                    "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+                }
+            ]
 
         comments = await client.list_issue_comments(
             final_owner, final_repo, issue_number, per_page, page
@@ -253,7 +284,9 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         result = await client.create_issue_comment(
             final_owner, final_repo, issue_number, body
@@ -277,7 +310,11 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return [{"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}]
+            return [
+                {
+                    "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+                }
+            ]
 
         labels = await client.list_labels(final_owner, final_repo)
         return [
@@ -306,10 +343,14 @@ def register_issue_tools(mcp: FastMCP, client: GitHubClient) -> None:
         final_owner, final_repo = settings.get_owner_repo(None, repo)
 
         if not settings.is_repo_allowed(final_owner, final_repo):
-            return {"error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"}
+            return {
+                "error": f"Репозиторий {final_owner}/{final_repo} не в списке разрешённых"
+            }
 
         labels_list = [l.strip() for l in labels.split(",")]
-        result = await client.add_labels(final_owner, final_repo, issue_number, labels_list)
+        result = await client.add_labels(
+            final_owner, final_repo, issue_number, labels_list
+        )
         return {
             "status": "success",
             "labels": [l.get("name") for l in result],
