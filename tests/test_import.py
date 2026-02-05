@@ -1,4 +1,5 @@
-from github_mcp import server, client, config
+from github_mcp import client, config, server
+
 
 def test_imports():
     """Проверка того, что основные модули проекта успешно импортируются."""
