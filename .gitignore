@@ -40,9 +40,9 @@ dist/
 docs/_build/
 
 # Исключаем тесты (если они не нужны в образе)
-tests/
-test_*.py
-*_test.py
+# tests/
+# test_*.py
+# *_test.py
 
 # Исключаем системные файлы
 .DS_Store
