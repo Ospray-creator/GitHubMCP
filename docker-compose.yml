@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  github-mcp:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      # Обязательные настройки
+      - GH_TOKEN=${GH_TOKEN:-your_token_here}
+      - GH_DEFAULT_OWNER=${GH_DEFAULT_OWNER:-your_username}
+      
+      # Необязательные настройки
+      - GH_DEFAULT_REPO=${GH_DEFAULT_REPO:-your_repo}
+      - GH_ALLOWED_REPOS=${GH_ALLOWED_REPOS:-${GH_DEFAULT_OWNER}/*}
+      - MCP_API_KEY=${MCP_API_KEY:-your_secret_key_here}
+      - LOG_LEVEL=INFO
+    volumes:
+      # Опционально: монтируем .env файл
+      - ./.env:/app/.env:ro
+    restart: unless-stopped
+    networks:
+      - github-mcp-network
+
+networks:
+  github-mcp-network:
+    driver: bridge

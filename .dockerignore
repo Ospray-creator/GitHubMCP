@@ -1,0 +1,49 @@
+# Исключаем виртуальные окружения
+.venv/
+venv/
+env/
+
+# Исключаем git
+.git/
+.gitignore
+
+# Исключаем файлы IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Исключаем временные файлы
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Исключаем логи
+*.log
+
+# Исключаем файлы сборки
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Исключаем локальные файлы конфигурации
+.env
+.env.local
+.env.production
+.env.test
+
+# Исключаем документацию
+docs/_build/
+
+# Исключаем тесты (если они не нужны в образе)
+tests/
+test_*.py
+*_test.py
+
+# Исключаем системные файлы
+.DS_Store
+Thumbs.db
