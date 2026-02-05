@@ -3,11 +3,17 @@ FROM python:3.11-slim
 # Установка рабочей директории
 WORKDIR /app
 
-# Копирование файлов проекта
-COPY . .
+# Сначала копируем только файл с зависимостями для кэширования
+COPY requirements.txt .
 
 # Установка зависимостей
-RUN pip install --no-cache-dir --upgrade pip
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Копирование остального кода
+COPY . .
+
+# Установка самого пакета
 RUN pip install --no-cache-dir -e .
 
 # Открытие порта 8080 для HTTP-сервера
